@@ -6,14 +6,14 @@ import io # Needed to handle the uploaded file bytes correctly
 # --- Configuration ---
 st.set_page_config(page_title="AI Image Detector", layout="centered")
 st.title("🤖 AI-Generated Image Detector")
-st.write("Upload an image to check the probability of it being AI-generated using the Sightengine API.")
+st.write("Upload an image to check the probability of it being AI-generated using the machine learning model.")
 
 # --- API Credentials Handling (using Streamlit Secrets) ---
 try:
     API_USER = st.secrets["sightengine"]["api_user"]
     API_SECRET = st.secrets["sightengine"]["api_secret"]
 except KeyError:
-    st.error("🚨 Sightengine API credentials not found! Please configure them in Streamlit Secrets.")
+    st.error("🚨 machine learning model credentials not found! Please configure them in Streamlit Secrets.")
     st.info("Create a file named `.streamlit/secrets.toml` with the following content:\n```toml\n[sightengine]\napi_user = \"YOUR_API_USER\"\napi_secret = \"YOUR_API_SECRET\"\n```")
     st.stop()
 except FileNotFoundError:
@@ -44,7 +44,7 @@ if uploaded_file is not None:
 
     # --- API Call and Result Display ---
     try:
-        with st.spinner('🧠 Contacting Sightengine API...'):
+        with st.spinner('🧠 Contacting machine learning model...'):
             response = requests.post('https://api.sightengine.com/1.0/check.json', files=files, data=params, timeout=20)
             response.raise_for_status()
 
@@ -73,7 +73,7 @@ if uploaded_file is not None:
             st.json(output)
 
     except requests.exceptions.RequestException as e:
-        st.error(f"🚨 Network Error: Failed to connect to Sightengine API. {e}")
+        st.error(f"🚨 Network Error: Failed to connect to machine learning model. {e}")
     except json.JSONDecodeError:
         st.error("🚨 Error: Could not decode the response from the API (invalid JSON).")
         st.text(response.text)
